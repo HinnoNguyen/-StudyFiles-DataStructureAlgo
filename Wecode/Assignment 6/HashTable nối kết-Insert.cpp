@@ -159,7 +159,7 @@ void DeleteHashtable(Hashtable &ht) {
 }
 
 int Insert(Hashtable &ht, Hocsinh x) {
-    if ((1.0 * ht.n) / ht.M >= LOAD) //Kiem tra bang bam co du cho them phan tu moi vao khong
+    if(ht.n +1 <= LOAD * ht.M) //Kiem tra bang bam co du cho them phan tu moi vao khong
         return 0;
     int i = Hash(ht, x.Maso);
     AddTail(ht.table[i], x);
