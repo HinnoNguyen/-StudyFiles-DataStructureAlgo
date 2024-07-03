@@ -1,5 +1,6 @@
 #include <iostream>
 #include <stack>
+#include <vector>
 using namespace std;
 
 struct Node {
@@ -86,9 +87,76 @@ int TreeHeight (Node* T) {
 	return -1;
 }
 
+//********************LONGEST PATH********************
+void PrintPathToLeaf(Node* root) {
+	static vector<int> path;
+	if (root == NULL) return;
+	path.push_back(root->data);
+
+    if (root->left == NULL && root->right == NULL) {
+        for (int val : path) {
+            cout << val << " ";
+        }
+        cout << endl;
+    }
+	else {
+		PrintPathToLeaf(root->left);
+        PrintPathToLeaf(root->right);
+    }
+    path.pop_back();
+}
+
+//********************SHORTEST PATH********************
+void PrintShortestPathToLeaf(Node* root) {
+	static vector<int> path;
+	if (root == NULL) return;
+	path.push_back(root->data);
+
+    if (root->left == NULL && root->right == NULL) {
+        for (int val : path) {
+            cout << val << " ";
+        }
+        cout << endl;
+    }
+	else {
+		if (TreeHeight(root->left) < TreeHeight(root->right))
+            PrintShortestPathToLeaf(root->left);
+        else
+            PrintShortestPathToLeaf(root->right);
+    
+    path.pop_back();
+	}
+}
+
+//********************COUNT NODES WHICH ARE LV1********************
+int CountNodesAtLevel1(Node* root) {
+    if (root == nullptr) return 0;
+
+    int count = 0;
+    if (root->left != nullptr) count++;
+    if (root->right != nullptr) count++;
+
+    return count;
+}
+
+//********************COUNT NODES WHICH ARE LV2********************
+int CountNodesAtLevel2(Node* root) {
+    if (root == nullptr) return 0;
+
+    int count = 0;
+    if (root->left != nullptr) {
+        count++; // Left child exists
+        count += CountNodesAtLevel1(root->left); // Count its children at level 1
+    }
+    if (root->right != nullptr) {
+        count++; // Right child exists
+        count += CountNodesAtLevel1(root->right); // Count its children at level 1
+    }
+
+    return count;
+}
 
 //*******************DELETE*******************
-
 Node* FindMin (Node* T) {
 	while (T->left != NULL)
 		T = T->left;
@@ -145,16 +213,31 @@ int main () {
 	//********************COUNT LEAF NODES********************
 	cout << "\nLeaf nodes: " << CountLeafNodes(T.root) << endl;
 
-
 	//********************TREE HEIGHTS********************
 	cout << "Tree level: " << TreeHeight(T.root) << endl;
 
+	//********************LONGEST PATH********************
+	cout << "\nLongest path from root to leaf:\n";
+    PrintPathToLeaf(T.root);
+
+	//********************SHORTEST PATH********************
+	cout << "\nShortest path from root to leaf:\n";
+    PrintShortestPathToLeaf(T.root);
+
+	//********************COUNT NODES WHICH ARE LV1********************
+	int nodesAtLevel1 = CountNodesAtLevel1(T.root);
+    cout << "Number of nodes at level 1: " << nodesAtLevel1 << endl;
+
+	//********************COUNT NODES WHICH ARE LV2********************
+	int nodesAtLevel2 = CountNodesAtLevel2(T.root);
+    cout << "Number of nodes at level 2: " << nodesAtLevel2 << endl;
+
 	//*******************DELETE*******************
-	cout << endl;
+	cout << "\nDelete node: ";
 	int del;
 	cin >> del;
 	T.root = DeleteNode (T.root, del);
 	cout << "After delete " << del << ": ";
-	
+
 	PrintNLR_Recursion (T.root);
 }
