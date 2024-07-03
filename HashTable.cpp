@@ -94,6 +94,27 @@ void PrintHashTable (HashTable& ht) {
     }
 }
 
+int CountCollisions(List& LS) {
+    int count = 0;
+    Node* cur = LS.Head;
+    while (cur != NULL) {
+        Node* temp = cur->next;
+        while (temp != NULL) {
+            if (cur->data == temp->data)
+                count++;
+            temp = temp->next;
+        }
+        cur = cur->next;
+    }
+    return count;
+}
+
+void CheckCollisions(HashTable& ht) {
+    for (int i = 0; i < ht.size; i++) {
+        int collisions = CountCollisions(ht.Table[i]);
+        cout << "Bucket " << i << ": " << collisions << " collision(s)" << endl;
+    }
+}
 
 int main () {
     int size, quantity; // kich thuoc bang bam, kich thuoc phan tu
@@ -116,5 +137,9 @@ int main () {
     }
         
     cout << "Hash table: ";
+
+    cout << "\nCollision count per bucket:" << endl;
+    CheckCollisions(HT);
+    
     PrintHashTable (HT);
 }
