@@ -155,5 +155,6 @@ int main () {
 	cin >> del;
 	T.root = DeleteNode (T.root, del);
 	cout << "After delete " << del << ": ";
+	
 	PrintNLR_Recursion (T.root);
 }
