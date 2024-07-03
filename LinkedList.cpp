@@ -27,6 +27,46 @@ Node* AddElement (Node* p, int x) {
     return temp;
 }
 
+// Hàm tìm phần tử giữa và chia danh sách
+Node* findMiddle(Node* head) {
+    if (head == nullptr) return nullptr;
+    Node *slow = head, *fast = head->next;
+    while (fast != nullptr && fast->next != nullptr) {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    return slow;
+}
+
+// Hàm gộp hai danh sách đã sắp xếp
+Node* merge(Node* left, Node* right) {
+    if (!left) return right;
+    if (!right) return left;
+
+    if (left->data <= right->data) {
+        left->next = merge(left->next, right);
+        return left;
+    } else {
+        right->next = merge(left, right->next);
+        return right;
+    }
+}
+
+// Hàm Merge Sort cho danh sách liên kết
+Node* mergeSort(Node* head) {
+    if (head == nullptr || head->next == nullptr) return head;
+
+    Node* middle = findMiddle(head);
+    Node* nextToMiddle = middle->next;
+    middle->next = nullptr;
+
+    Node* left = mergeSort(head);
+    Node* right = mergeSort(nextToMiddle);
+
+    return merge(left, right);
+}
+
+
 //********************ADD********************
 
 Node* AddHead (Node* L, int x) {
@@ -101,21 +141,29 @@ int main () {
         p = AddElement (p, x);
     }
 
+	//Random
+	L = mergeSort (L);
+	Print(L);
+
 	//********************ADD********************
+	cout << "\nAdd Nodes: \n";
     int k;
     cin >> k >> x;
     if (k == 0) L = AddHead (L, x);
     else if (k == n) L = AddTail (L, x);
     else L = AddAt (L, k, x);
+	cout << "Linked List after adding node: ";
     Print (L);
 	cout << endl;
 
 	//*******************DELETE*******************
+	cout << "\nDelete Nodes: \n";
 	int del;
 	cin >> del >> x;
 	if (del == 0) L = DeleteHead (L, x);
 	else if (del == n - 1) L = DeleteTail (L, x);
 	else L = DeleteAt (L, del, x);
+	cout << "Linked List after deleting node: ";
 	Print(L);
 	cout << endl;
 
