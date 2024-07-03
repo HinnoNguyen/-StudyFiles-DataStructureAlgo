@@ -20,9 +20,9 @@ void CreateTree (Tree& T) {
 	T.root = NULL;
 }
 
-Node* InsertNode (Tree& T, int x) {
-	Node* InsertNode = new Node(x);
-	if (T.root == NULL) T.root = InsertNode;
+void InsertNode (Tree& T, int x) {
+	Node* temp = new Node(x);
+	if (T.root == NULL) T.root = temp;
 	else {
 		Node* cur = T.root;
 		Node* pre = NULL;
@@ -32,8 +32,8 @@ Node* InsertNode (Tree& T, int x) {
 			else if (cur->data < x) cur = cur->right;
 			else break;
 		}
-		if (pre->data > x) pre->left = InsertNode;
-		else if (pre->data < x) pre->right = InsertNode;
+		if (pre->data > x) pre->left = temp;
+		else if (pre->data < x) pre->right = temp;
 		else return;
 	}
 }
@@ -89,17 +89,34 @@ int TreeHeight (Node* T) {
 
 //*******************DELETE*******************
 
-Node* DeleteNode(Node* T, int x) {
-	if (T != NULL) {
-		if (T->data == x) {
-			DeleteNode (T->left , x);
-			DeleteNode (T->right, x);
-			T = NULL;
-		}
-		else if (T->data > x) T->left = DeleteNode (T->left, x);
-		else T->right = DeleteNode (T->right, x);
+Node* FindMin (Node* T) {
+	while (T->left != NULL)
+		T = T->left;
 		return T;
+}
+
+Node* DeleteNode(Node* T, int x) {
+	if (T == NULL) return T;
+	if (x < T->data)
+		T->left = DeleteNode(T->left, x);
+	else if (x > T->data)
+		T->right = DeleteNode(T->right, x);
+	else {
+		if (T->left == NULL) {
+			Node*temp = T->right;
+			delete T;
+			return temp;
+		}
+		else if (T->right == NULL) {
+			Node* temp = T->left;
+			delete T;
+			return temp;
+		}
+		Node* temp = FindMin (T->right);
+		T->data = temp->data;
+		T->right = DeleteNode(T->right, temp->data);
 	}
+	return T;
 }
 
 //********************************************
@@ -111,7 +128,7 @@ int main () {
 	CreateTree (T);
 	for (int i = 0; i < n; i++) {
 		cin >> x;
-		T.root = InsertNode(T, x);
+		InsertNode(T, x);
 	}
 
 	//********************PRINT TRAVESAL********************
@@ -126,18 +143,17 @@ int main () {
 	PrintNLR_Stack (T.root);
 
 	//********************COUNT LEAF NODES********************
-	cout << "Leaf nodes: " << CountLeafNodes(T.root) << endl;
+	cout << "\nLeaf nodes: " << CountLeafNodes(T.root) << endl;
 
 
 	//********************TREE HEIGHTS********************
 	cout << "Tree level: " << TreeHeight(T.root) << endl;
 
 	//*******************DELETE*******************
+	cout << endl;
 	int del;
 	cin >> del;
 	T.root = DeleteNode (T.root, del);
 	cout << "After delete " << del << ": ";
 	PrintNLR_Recursion (T.root);
-
-    return 0;
 }

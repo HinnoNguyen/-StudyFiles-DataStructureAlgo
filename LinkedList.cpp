@@ -116,6 +116,8 @@ int main () {
 	if (del == 0) L = DeleteHead (L, x);
 	else if (del == n - 1) L = DeleteTail (L, x);
 	else L = DeleteAt (L, del, x);
+	Print(L);
+	cout << endl;
 
     return 0;
 }
