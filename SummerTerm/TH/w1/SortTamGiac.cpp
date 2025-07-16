@@ -24,9 +24,6 @@ long long areaSquared(int a, int b, int c) {
 }
 
 int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-
     int n;
     cin >> n;
     vector<Triangle> triangles(n);
@@ -45,7 +42,7 @@ int main() {
         }
     }
 
-    sort(validTriangles.begin(), validTriangles.end(), [](const ValidTriangle& x, const ValidTriangle& y) {
+    sort(validTriangles.begin(), validTriangles.end(), [](ValidTriangle& x, ValidTriangle& y) {
         return x.area2 > y.area2;
     });
 
