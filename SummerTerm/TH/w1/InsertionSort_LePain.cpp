@@ -29,7 +29,6 @@ int main() {
 
     int k;
     while (cin >> k) {
-        // kiểm tra giới hạn tối đa
         if (k > n * (n - 1) / 2) {
             cout << "IMPOSSIBLE\n";
             continue;
