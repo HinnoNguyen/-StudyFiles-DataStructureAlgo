@@ -1,53 +1,90 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
+#include <bits/stdc++.h>
 using namespace std;
 
-
-int insertionSortCount(vector<int> a) {
-    int cnt = 0;
-    for (int i = 1; i < a.size(); ++i) {
-        int key = a[i];
-        int j = i - 1;
-        while (j >= 0 && a[j] > key) {
-            a[j + 1] = a[j];
-            --j;
-            ++cnt; 
-        }
-        a[j + 1] = key;
+int count_inversions(const vector<int>& a) {
+    int n = a.size();
+    map<int, int> compress;
+    vector<int> sorted = a;
+    sort(sorted.begin(), sorted.end());
+    int id = 1;
+    for (int x : sorted) {
+        if (!compress.count(x)) compress[x] = id++;
     }
-    return cnt;
+
+    vector<int> BIT(id + 2, 0);
+    auto update = [&](int i) {
+        while (i < BIT.size()) {
+            BIT[i]++;
+            i += i & -i;
+        }
+    };
+    auto query = [&](int i) {
+        int res = 0;
+        while (i > 0) {
+            res += BIT[i];
+            i -= i & -i;
+        }
+        return res;
+    };
+
+    int inv = 0;
+    for (int i = n - 1; i >= 0; --i) {
+        int val = compress[a[i]];
+        inv += query(val - 1);
+        update(val);
+    }
+    return inv;
 }
 
 int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
     int n;
     cin >> n;
-    vector<int> a(n);
-    for (int &x : a) cin >> x;
+    vector<int> original(n);
+    for (int& x : original) cin >> x;
 
-    sort(a.begin(), a.end());
+    vector<int> sorted = original;
+    sort(sorted.begin(), sorted.end());
 
+    int max_inv = n * (n - 1) / 2;
     int k;
     while (cin >> k) {
-        if (k > n * (n - 1) / 2) {
+        // Check trivial cases
+        if (k < 0 || k > max_inv) {
             cout << "IMPOSSIBLE\n";
             continue;
         }
 
-        vector<int> res;
-        for (int i = n - 1; i >= 0; --i) {
-            int pos = min(k, (int)res.size());
-            res.insert(res.begin() + pos, a[i]);
-            k -= pos;
-        }
+        // Start from descending order (max inversion), reduce gradually
+        vector<int> current = sorted;
+        reverse(current.begin(), current.end());
 
-        if (insertionSortCount(res) != k) {
-            cout << "IMPOSSIBLE\n";
+        int current_inv = count_inversions(current);
+        if (current_inv == k) {
+            for (int i = 0; i < n; ++i)
+                cout << current[i] << (i + 1 < n ? ' ' : '\n');
             continue;
         }
 
-        for (int i = 0; i < n; ++i) {
-            cout << res[i] << (i + 1 < n ? ' ' : '\n');
+        bool found = false;
+        for (int i = 0; i < n && current_inv > k; ++i) {
+            for (int j = n - 1; j > i && current_inv > k; --j) {
+                if (current[j] < current[j - 1]) {
+                    swap(current[j], current[j - 1]);
+                    --current_inv;
+                }
+            }
+        }
+
+        if (current_inv == k) {
+            for (int i = 0; i < n; ++i)
+                cout << current[i] << (i + 1 < n ? ' ' : '\n');
+        } else {
+            cout << "IMPOSSIBLE\n";
         }
     }
+
+    return 0;
 }
