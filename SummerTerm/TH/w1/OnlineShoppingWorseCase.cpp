@@ -1,34 +1,36 @@
 #include <iostream>
-#include <vector>
-#include <algorithm>
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
 using namespace std;
+using namespace __gnu_pbds;
+
+typedef tree<
+    long, 
+    null_type,
+    less<long>,
+    rb_tree_tag,
+    tree_order_statistics_node_update>
+    ordered_set;
 
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    vector<long> onl;
+    ordered_set onl;
     int a;
     long b;
 
     while (cin >> a && a != 0) {
         cin >> b;
-        auto pos = lower_bound(onl.begin(), onl.end(), b);
         if (a == 1) {
-            if (pos == onl.end() || *pos != b) {
-                onl.insert(pos, b);  // chèn đúng vị trí
-            }
+            onl.insert(b);  
         } else if (a == 2) {
-            if (pos == onl.end() || *pos != b) {
-                cout << 0 << '\n';
-            } else {
-                cout << (pos - onl.begin()) + 1 << '\n';  // vị trí bắt đầu từ 1
-            }
+            if (onl.find(b) == onl.end()) cout << 0 << '\n';
+            else cout << onl.order_of_key(b) + 1 << '\n'; 
         }
     }
 
     return 0;
 }
 
-
-// https://chatgpt.com/share/68776442-1808-8001-a705-3067846142e1
+// https://chatgpt.com/share/687a391e-48d8-8001-9a29-6cf6a4d9ff77

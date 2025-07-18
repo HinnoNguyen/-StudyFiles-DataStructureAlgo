@@ -10,7 +10,7 @@ int partition(int pivot, int *a, int n) {
         while (left <= right) {
                 while (a[left] < pivot){
                         left++;  
-                        count++;
+                        count ++;
                 }
                 while (a[right] > pivot){
                         right--;
