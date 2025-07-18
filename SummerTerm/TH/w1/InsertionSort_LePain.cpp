@@ -57,7 +57,6 @@ int main() {
             continue;
         }
 
-        // Start from descending order (max inversion), reduce gradually
         vector<int> current = sorted;
         reverse(current.begin(), current.end());
 
@@ -89,6 +88,6 @@ int main() {
     return 0;
 }
 
-// https://github.com/thaituanUIT/DSA/blob/main/insertion_overload.cpp
-// https://chatgpt.com/share/687a6728-0ccc-8001-ac49-35ce423aa7f5
+// https://chatgpt.com/share/687a6e12-5d14-8001-ba88-3aaf883676d2
 // https://www.youtube.com/watch?v=LEy9NdrlEGo
+// https://github.com/thaituanUIT/DSA/blob/main/insertion_overload.cpp
