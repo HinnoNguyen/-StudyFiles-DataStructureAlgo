@@ -26,21 +26,32 @@ bool InsertNode (node* &root, int x) {
     else return false;
 }
 
-int CountNodeOneChild (node* root) {
-    if (root == NULL) return 0;
-
-    int count = 0;
-    if ((root->left && !root->right) || (!root->left && root->right))count = 1;
-
-    return count + CountNodeOneChild(root->left) + CountNodeOneChild(root->right);
+void PrintRNL(node* root, int depth = 0) { // Right -> Root -> Left
+    if (!root) return;
+    PrintRNL(root->right, depth + 1);
+    for (int i = 0; i < depth * 4; ++i) cout << '.';
+    cout << root->data << '\n';
+    PrintRNL(root->left, depth + 1);
 }
+
+void PrintNLR (node* root, int depth = 0) { // Root -> Left -> Right
+    if (!root) return;
+    for (int i = 0; i < depth * 4; ++i) cout << '.';
+    cout << root->data << '\n';
+    PrintNLR(root->left, depth + 1);
+    PrintNLR(root->right, depth + 1);
+}
+
 
 int main () {
     node* root = NULL;
     int x;
     while (cin >> x && x != 0) InsertNode(root, x);
 
-    cout << CountNodeOneChild(root);
+    PrintRNL(root);
+    cout << endl;
+    PrintNLR(root);
+
     return 0;
 }
 
