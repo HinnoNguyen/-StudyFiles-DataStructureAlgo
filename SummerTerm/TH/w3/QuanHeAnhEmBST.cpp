@@ -37,10 +37,8 @@ void run(int q, Tree T){
         int u, v;
         cin >> u >> v;
         cout << u << " va " << v << " ";
-        if (isBrother(T, u, v))
-            cout << "la anh em\n";
-        else
-            cout << "khong phai la anh em\n";
+        if (isBrother(T, u, v)) cout << "la anh em\n";
+        else cout << "khong phai la anh em\n";
     }
 }
 
@@ -56,16 +54,12 @@ void Insert(Tree &T, int x) {
 
     while (cur != NULL) {
         prev = cur;
-        if (x < cur->key)
-            cur = cur->pLeft;
-        else
-            cur = cur->pRight;
+        if (x < cur->key) cur = cur->pLeft;
+        else cur = cur->pRight;
     }
 
-    if (x < prev->key)
-        prev->pLeft = newNode;
-    else
-        prev->pRight = newNode;
+    if (x < prev->key) prev->pLeft = newNode;
+    else prev->pRight = newNode;
 }
 
 bool isBrother(Tree T, int a, int b) {
@@ -80,19 +74,12 @@ bool isBrother(Tree T, int a, int b) {
         bool leftHasB = (cur->pLeft != NULL && cur->pLeft->key == b);
         bool rightHasA = (cur->pRight != NULL && cur->pRight->key == a);
 
-        if ((leftHasA && rightHasB) || (leftHasB && rightHasA)) {
-            return true;
-        }
-
-        // Di chuyển xuống cây
-        if (a < cur->key && b < cur->key)
-            cur = cur->pLeft;
-        else if (a > cur->key && b > cur->key)
-            cur = cur->pRight;
-        else
-            cur = (cur->pLeft != NULL) ? cur->pLeft : cur->pRight;
+        if ((leftHasA && rightHasB) || (leftHasB && rightHasA)) return true;
+        
+        if (a < cur->key && b < cur->key) cur = cur->pLeft;
+        else if (a > cur->key && b > cur->key) cur = cur->pRight;
+        else cur = (cur->pLeft != NULL) ? cur->pLeft : cur->pRight;
     }
-
     return false;
 
 // Source: https://chatgpt.com/share/68899082-7cfc-8001-ae6a-40c02e90e7cb
