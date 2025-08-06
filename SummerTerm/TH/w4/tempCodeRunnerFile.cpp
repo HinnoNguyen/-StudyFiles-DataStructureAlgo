@@ -1,11 +1,10 @@
 #include <iostream>
-#include <sstream>
-#include <string>
+#include <cstdlib>
+#include <vector>
 using namespace std;
 
 const int MAX_M = 1000;
 const int EMPTY = 1000000000;
-const int MAX_N = 1000; 
 
 int hash_table[MAX_M];
 
@@ -40,17 +39,21 @@ int main() {
 
     while (cin >> m && m != 0) {
         cin >> a >> b;
-        cin.ignore(); 
 
-        string line;
-        getline(cin, line);
-        istringstream iss(line);
-
+        vector<int> numbers;
         int x;
-        int count_inserted = 0;
-        init_table(m);
+        char ch;
+        while (cin >> x) {
+            numbers.push_back(x);
+            ch = cin.get();
+            if (ch == '\n' || ch == EOF) break;
+        }
 
-        while (iss >> x) insert(x, m, a, b, count_inserted);
+        init_table(m);
+        int count_inserted = 0;
+        for (int i = 0; i < numbers.size(); ++i) {
+            insert(numbers[i], m, a, b, count_inserted);
+        }
 
         for (int i = 0; i < m; ++i) {
             if (hash_table[i] == EMPTY) cout << "None";
@@ -63,5 +66,3 @@ int main() {
 
     return 0;
 }
-
-// Source: https://chatgpt.com/share/6892d503-d3d0-8001-8d0a-9519d2e03d87
