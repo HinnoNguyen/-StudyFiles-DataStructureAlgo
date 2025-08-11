@@ -14,14 +14,13 @@ int main() {
     return 0;
 }
 
+
 struct node {
     int data;
     node* left;
     node* right;
     int x, y;
 };
-
-
 
 node* NewNode(int x) {
     node* p = new node();
@@ -39,6 +38,33 @@ bool InsertNode (node* &root, int x) {
     if (x < root->data) return InsertNode(root->left, x);
     else if (x > root->data) return InsertNode(root->right, x);
     else return false;
+}
+
+int TreeHeight(node* root) {
+    if (!root) return 0;
+    int leftHeight = TreeHeight(root->left);
+    int rightHeight = TreeHeight(root->right);
+    return 1 + max(leftHeight, rightHeight);
+}
+
+int TreeLevel(node* root) {
+    if (!root) return 0;
+    int leftLevel = TreeLevel(root->left);
+    int rightLevel = TreeLevel(root->right);
+    return 1 + max(leftLevel, rightLevel);
+}
+
+int TreeLeafCount(node* root) {
+    if (!root) return 0;
+    if (!root->left && !root->right) return 1; 
+    return TreeLeafCount(root->left) + TreeLeafCount(root->right);
+}
+
+int TreeNodeCount(node* root) {
+    if (!root) return 0;
+    int leftCount = TreeNodeCount(root->left);
+    int rightCount = TreeNodeCount(root->right);
+    return 1 + leftCount + rightCount;
 }
 
 void PrintTreeNLR(node* root) { // NLR Traversal
