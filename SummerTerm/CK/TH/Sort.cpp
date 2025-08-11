@@ -22,12 +22,12 @@ int swap (int a, int b) {
     return a;
 }
 
-void SelectionSort(vector<int> a) {
-    int n = a.size();
+void SelectionSort(vector<int> a, int n) {
     for (int i = 0; i < n - 1; i++) {
         int temp = i;
         for (int j = i + 1; j < n; j++) {
-            if ( a[j] < a[temp]) temp = j;
+            if ( a[j] < a[temp]) 
+                temp = j;
         }
         swap(a[i], a[temp]);
     }
