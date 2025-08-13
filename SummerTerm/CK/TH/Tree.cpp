@@ -47,6 +47,7 @@ int TreeHeight(node* root) {
     return 1 + max(leftHeight, rightHeight);
 }
 
+
 int TreeLevel(node* root) {
     if (!root) return 0;
     int leftLevel = TreeLevel(root->left);

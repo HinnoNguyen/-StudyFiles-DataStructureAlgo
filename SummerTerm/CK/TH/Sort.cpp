@@ -129,3 +129,8 @@ void MergeSort(vector<int> &a, int left, int right) {
         Merge(a, left, mid, right);
     }
 }
+
+void Merge (vector<int> &a) {
+    int n = a.size();
+    MergeSort(a, 0, n - 1);
+}
