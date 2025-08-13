@@ -79,6 +79,10 @@ void QuickSort(vector<int> &a, int low, int high) {
     }
 }
 
+void QuickSort (vector<int> a, int n) {
+    QuickSort(a, 0, n - 1);
+}
+
 void Heapify(vector<int> &a, int n, int i) {
     int largest = i;
     int left = 2 * i + 1;
